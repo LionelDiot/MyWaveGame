@@ -1,7 +1,7 @@
 class Player
   attr_accessor :name, :life_points
 
-  def initialize (nom)
+  def initialize(nom)
     @name = nom
     @life_points = 10
   end
@@ -17,7 +17,7 @@ class Player
 
   def attacks(target)
     puts "#{name} attaque #{target.name} !"
-    damage_inflicted = self.compute_damage
+    damage_inflicted = compute_damage
     puts "#{name} inflige #{damage_inflicted} dégats !"
     target.gets_damage(damage_inflicted)
   end
@@ -26,13 +26,11 @@ class Player
     (@life_points > 0)
   end
 
-  private 
+  private
 
   def compute_damage
     rand(1..6)
   end
-
-  
 end
 
 class HumanPlayer < Player
@@ -46,7 +44,7 @@ class HumanPlayer < Player
 
   def search_weapon
     dice = rand(1..6)
-    if dice > weapon_level 
+    if dice > weapon_level
       @weapon_level = dice
       puts "Ta nouvelle arme est niveau #{weapon_level} !"
     else
@@ -56,9 +54,10 @@ class HumanPlayer < Player
 
   def search_health_pack
     dice = rand(1..6)
-    if dice == 1
+    case dice
+    when 1
       puts "Tu n'as rien trouvé :("
-    elsif  dice == 6
+    when 6
       @life_points += 80
       @life_points = 100 if @life_points > 100
       puts "Waow, tu as trouvé un pack de +80 points de vie !"
@@ -68,11 +67,10 @@ class HumanPlayer < Player
       puts "Bravo, tu as trouvé un pack de +50 points de vie !"
     end
   end
-  
-  private 
+
+  private
 
   def compute_damage
     rand(1..6) * @weapon_level
   end
-
 end

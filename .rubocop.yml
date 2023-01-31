@@ -39,3 +39,5 @@ Metrics/AbcSize:
   Enabled: false
 require:
   - rubocop-rails
+Rails/Output:
+  Enabled: false

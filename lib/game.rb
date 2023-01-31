@@ -3,17 +3,17 @@ require_relative 'player'
 class Game
   attr_accessor :our_player, :enemies_array
 
-  def initialize()
+  def initialize
     puts "------------------------------------------------"
     puts "|Bienvenue sur 'ILS VEULENT TOUS MA POO' !      |"
     puts "|Le but du jeu est d'être le dernier survivant !|"
     puts "-------------------------------------------------"
     puts
     puts "Quel est ton nom gladiateur ? "
-    print">"
+    print ">"
     player_name = gets.chomp
-    @our_player=HumanPlayer.new(player_name)
-    @enemies_array=[]
+    @our_player = HumanPlayer.new(player_name)
+    @enemies_array = []
     @enemies_array << Player.new("Josiane")
     @enemies_array << Player.new("José")
     @enemies_array << Player.new("John")
@@ -24,8 +24,8 @@ class Game
     @enemies_array.delete_if { |enemy| enemy.name == dead_enemy.name }
   end
 
-  def is_still_going?
-    (((@enemies_array.length > 0)) && (@our_player.still_alive?))
+  def still_going?
+    (!@enemies_array.empty? && @our_player.still_alive?)
   end
 
   def show_players
@@ -33,19 +33,20 @@ class Game
     puts "Il reste #{@enemies_array.length} enemie(s) en vie !"
   end
 
-  def human_turn()
-    action="0" # on test que l'utilisateur rentre bien une des options du menu (sinon on loop)
-    until ((0 < action.to_i) && (action.to_i <= @enemies_array.length)) || (action == "a") || (action == "s")
+  def human_turn
+    action = "0" # on test que l'utilisateur rentre bien une des options du menu (sinon on loop)
+    until ((action.to_i > 0) && (action.to_i <= @enemies_array.length)) || (action == "a") || (action == "s")
       print_menu
-      action=gets.chomp
+      action = gets.chomp
     end
-    if action == "a"
+    case action
+    when "a"
       @our_player.search_weapon
-    elsif action == "s"
+    when "s"
       @our_player.search_health_pack
     else
       @our_player.attacks(@enemies_array[action.to_i - 1])
-      self.kill_player(@enemies_array[action.to_i - 1]) unless @enemies_array[action.to_i - 1].still_alive?
+      kill_player(@enemies_array[action.to_i - 1]) unless @enemies_array[action.to_i - 1].still_alive?
     end
     gets.chomp
   end
@@ -56,12 +57,12 @@ class Game
     }
     gets.chomp if our_player.still_alive?
   end
-  
+
   def end
     puts
     puts "------------------------------------------------"
     puts "        La partie est finie : #{@our_player.name}"
-    (our_player.still_alive?) ? (puts "        BRAVO TU ES LE DERNIER SURVIVANT") : (puts "       RIP TU ES MORT, RETENTE TA CHANCE")
+    our_player.still_alive? ? (puts "        BRAVO TU ES LE DERNIER SURVIVANT") : (puts "       RIP TU ES MORT, RETENTE TA CHANCE")
     puts "-------------------------------------------------"
   end
 
@@ -73,9 +74,8 @@ class Game
     puts "s - chercher à se soigner"
     puts "attaquer un joueur en vue :"
     @enemies_array.each_with_index { |enemy, index|
-      puts "#{index+1} - #{enemy.name} a #{enemy.life_points} points de vie" if (enemy.still_alive?)
+      puts "#{index + 1} - #{enemy.name} a #{enemy.life_points} points de vie" if enemy.still_alive?
     }
     print ">"
   end
-
 end
