@@ -21,7 +21,7 @@ while our_player.life_points > 0 && (enemies_array[0].life_points > 0 || enemies
   our_player.show_state
   puts
   action = "n"
-  while ["a", "s", "0", "1"].exclude?(action)
+  while !(["a", "s", "0", "1"].include?(action))
     puts "Choisis une action ! "
     puts "a - chercher une meilleure arme"
     puts "s - chercher à se soigner"

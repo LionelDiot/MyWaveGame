@@ -47,7 +47,7 @@ class WaveGame < Game
       @nb_enemies = gets.chomp.to_i
     end
     puts "Donne leur tous un nom !"
-    i = 0
+    i = 1
     @nb_enemies.times do
       enemy_name = ""
       while enemy_name == ""
